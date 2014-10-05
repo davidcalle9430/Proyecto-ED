@@ -2,7 +2,8 @@
 #include <fstream>
 #include "Volumen.h"
 #include <string>
-
+#include "Arbol.h"
+//HOLAS desde windos
 Volumen *p;
 int main(int argc, char** argv)
 {
