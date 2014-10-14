@@ -3,10 +3,11 @@
 #include "Volumen.h"
 #include <string>
 #include "Arbol.h"
+#include "Intensidad.h"
 //HOLAS desde windos
 Volumen *p;
 int main(int argc, char** argv)
-{
+{ 
 
     string op;
 
