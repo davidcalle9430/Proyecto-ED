@@ -1,6 +1,8 @@
 #include "Imagen2D.h"
 #include <string>
+#include <list>
 #include "cstring"
+#include "Intensidad.h"
 using namespace std;
 
 
@@ -139,4 +141,29 @@ void Imagen2D::exportarImagen(char* nom_arch)
     cout<<"La proyeccion 2D del volumen en memoria no ha podido ser generada"<<endl;
     }
     arch.close();
+}
+
+std::list<Intensidad>* Imagen2D::calcularListaIntensidades(){
+  list<Intensidad>* retorno= new list<Intensidad>();
+  for(int i=0; i<fila;i++){
+    for(int j=0; j<columna;j++){
+         int valor=(*(imagen))[i][j];
+         Intensidad* temporal= new Intensidad(valor,1);
+         Intensidad* busqueda=buscarIntensidad(temporal,retorno);
+         if(busqueda!=NULL){
+           busqueda->setFrecuencia(busqueda->getFrecuencia()+1);
+         }else{
+           retorno->push_back(*(temporal));
+         }
+    }
+  }
+}
+
+Intensidad* Imagen2D::buscarIntensidad(Intensidad* intensidad, std::list<Intensidad>* lista){
+  for(std::list<Intensidad>::iterator i=lista->begin();i!=lista->end();i++){
+    if(*i==*intensidad){
+      return &(*i);
+    }
+  }
+  return NULL;
 }

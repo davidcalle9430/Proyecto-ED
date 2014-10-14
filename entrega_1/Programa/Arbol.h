@@ -14,7 +14,7 @@ class Arbol
         Nodo<T>* getCabeza();
         void setCabeza(Nodo<T>* nuevo);
         void eliminarArbol(Nodo<T>* cabeza);
-        bool operator <(const &Arbol<T> arbol)const{
+        bool operator <(const Arbol<T>& arbol)const{
           if(cabeza->getContenido()<arbol->getCabeza()->getContenido()){
             return true;
           }

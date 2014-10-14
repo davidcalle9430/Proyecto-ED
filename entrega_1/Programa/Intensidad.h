@@ -7,16 +7,16 @@ private:
 public:
   Intensidad();
   Intensidad(int pValor, int pFrecuencia);
-  int getValor();
+  int getValor()const;
   void setValor(int nuevo);
-  int getFrecuencia();
+  int getFrecuencia()const;
   void setFrecuencia(int valor);
   bool operator <(const Intensidad& in)const{
-  
-  
+
+
   int a=frecuencia;
   int b=in.getFrecuencia();
-    
+
    return a<b;
   }
   bool operator ==(const Intensidad& i)const{
