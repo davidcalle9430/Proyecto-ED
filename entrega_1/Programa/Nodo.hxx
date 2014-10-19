@@ -14,7 +14,8 @@ Nodo<T>::Nodo(T variable)
 }
 
 template<class T>
-T Nodo<T>::getContenido(){
+T Nodo<T>::getContenido()const{
+   
 return contenido;
 }
 template<class T>

@@ -1,8 +1,10 @@
 #ifndef __IMAGEN2D_H
 #define __IMAGEN2D_H
 #include <vector>
+#include <deque>
 #include <list>
 #include "Intensidad.h"
+#include "Arbol.h"
 class Imagen2D
 {
 private:
@@ -23,8 +25,8 @@ public:
     void setFormato(std::string nuevo);
     void imprimirImagen();
     void exportarImagen(char* nom_arch);
-    std::list<Intensidad>* calcularListaIntensidades();
-    Intensidad* buscarIntensidad(Intensidad* intensidad, std::list<Intensidad>* lista);
+    std::vector<Arbol<Intensidad> >* calcularListaIntensidades();
+    Intensidad* buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista);
 
 };
 #include "Imagen2D.hxx"

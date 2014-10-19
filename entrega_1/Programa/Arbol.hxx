@@ -8,7 +8,7 @@ Arbol<T>::Arbol()
     cabeza=NULL;
 }
 template<class T>
-Nodo<T>* Arbol<T>::getCabeza()
+Nodo<T>* Arbol<T>::getCabeza()const
 {
     return cabeza;
 }

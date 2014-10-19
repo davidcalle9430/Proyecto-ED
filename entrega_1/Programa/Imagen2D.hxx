@@ -1,7 +1,10 @@
 #include "Imagen2D.h"
 #include <string>
+#include <algorithm>
 #include <list>
+#include <deque>
 #include "cstring"
+#include "Arbol.h"
 #include "Intensidad.h"
 using namespace std;
 
@@ -53,6 +56,7 @@ Imagen2D::Imagen2D(char * nombre)
 
     Imagen2D* nueva= new Imagen2D();
     fstream archivo(nombre);
+
     if(archivo)
     {
 
@@ -65,8 +69,11 @@ Imagen2D::Imagen2D(char * nombre)
         archivo>>width;
         archivo>>height;
         archivo>>x;
-        vector< vector<int > >* duracion= new vector< vector<int > > (width, vector<int> (height));
-//	vector< vector<int > > duracion(width, vector<int> (height));
+        cout<<"la altura es: "<<height<<endl;
+         cout<<"el ancho  es: "<<width<<endl;
+
+        vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
+
 
 
         for(int i=0; i<height; i++)
@@ -80,9 +87,10 @@ Imagen2D::Imagen2D(char * nombre)
                 int temp;
                 archivo>>temp;
                 (*(duracion))[i][j]=temp;
+
             }
         }
-
+   cout<<"llega"<<endl;
         vector< vector<int> >* temporal= duracion;
         setImagen(temporal);
         setFila(height);
@@ -142,28 +150,101 @@ void Imagen2D::exportarImagen(char* nom_arch)
     }
     arch.close();
 }
+bool comparadora( Intensidad& i, Intensidad& i2){
+  return i.getFrecuencia()<i2.getFrecuencia();
+}
 
-std::list<Intensidad>* Imagen2D::calcularListaIntensidades(){
-  list<Intensidad>* retorno= new list<Intensidad>();
+std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades(){
+  deque<Intensidad>* retorno= new deque<Intensidad>();
   for(int i=0; i<fila;i++){
     for(int j=0; j<columna;j++){
          int valor=(*(imagen))[i][j];
-         Intensidad* temporal= new Intensidad(valor,1);
+         Intensidad* temporal= new Intensidad();
+         temporal->setValor(valor);
+         temporal->setFrecuencia(1);
+
+
          Intensidad* busqueda=buscarIntensidad(temporal,retorno);
          if(busqueda!=NULL){
            busqueda->setFrecuencia(busqueda->getFrecuencia()+1);
-         }else{
+           /* cout<<" se encuentra la frecuencia de "<<busqueda->getValor()<<" es "<<busqueda->getFrecuencia()<<endl;
+            system("pause");
+            */
+            }else{
+
            retorno->push_back(*(temporal));
          }
     }
   }
+  sort(retorno->begin(), retorno->end());
+  //retorno->sort();
+
+  vector<Arbol<Intensidad> >* lista= new vector<Arbol<Intensidad> >();
+  int contador=0;
+  for(deque<Intensidad>::iterator i=retorno->begin();i!=retorno->end();i++){
+
+    Arbol<Intensidad>* miArbolito= new Arbol<Intensidad>();
+ //cout<<"la intensidad es: "<<(*i).getValor()<<" frecuencia: "<<(*i).getFrecuencia()<<endl;
+    contador+=(*i).getFrecuencia();
+    Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*i);
+    miArbolito->setCabeza(nodo);
+    lista->push_back(*miArbolito);
+  }
+
+
+  return lista;
 }
 
-Intensidad* Imagen2D::buscarIntensidad(Intensidad* intensidad, std::list<Intensidad>* lista){
-  for(std::list<Intensidad>::iterator i=lista->begin();i!=lista->end();i++){
-    if(*i==*intensidad){
+Arbol<Intensidad>* hoffman(vector<Arbol<Intensidad> >* lista){
+ // cout<<"paso tam= "<<lista->size()<<endl;
+ cout<<"el primer elemento es: "<<(*lista)[0].getCabeza()->getContenido().getFrecuencia()<<endl;
+  system("pause");
+  while(lista->size()>1){
+        sort(lista->begin(), lista->end());
+// saco el primero y el segundo
+Arbol<Intensidad>* primero= &((*lista)[0]);
+Arbol<Intensidad>* segundo=&((*lista)[1]);
+Arbol<Intensidad>* nuevon= new Arbol<Intensidad>();
+int suma= primero->getCabeza()->getContenido().getFrecuencia()+segundo->getCabeza()->getContenido().getFrecuencia();
+Intensidad* nueva= new Intensidad(-1,suma);
+Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*nueva);
+nuevon->setCabeza(nodo);
+nodo->setHijoDerecho(segundo->getCabeza());
+nodo->setHijoIzquierdo(primero->getCabeza());
+lista->erase(lista->begin());
+lista->erase(lista->begin());
+lista->push_back(*nuevon);
+
+//cout<<"ahora el tam es: "<<lista->size()<<endl;
+  }
+  return  &((*lista)[0]);
+}
+
+Intensidad* Imagen2D::buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista){
+  for(std::deque<Intensidad>::iterator i=lista->begin();i!=lista->end();i++){
+    if((*i).getValor()==(*intensidad).getValor()){
+          //  cout<<"se encontro a "<<(*i).getValor()<<" con frecuencia "<<(*i).getFrecuencia()<<endl;
+            // system("pause");
       return &(*i);
     }
   }
   return NULL;
+}
+std::string codificarHoffman(Nodo<Intensidad>* nodo, int valor, std::string cadena){
+    if(nodo==NULL){
+      return "";
+    }
+    if(nodo!=NULL&&nodo->getContenido().getValor()==valor){
+        return cadena;
+    }
+     if(nodo!=NULL&&nodo->getHijoIzquierdo()==NULL&&nodo->getHijoIzquierdo()==NULL&&nodo->getContenido().getValor()!=valor){
+        return "";
+    }
+    std::string derecha= codificarHoffman(nodo->getHijoDerecho(),valor,(cadena+"1"));
+      std::string izquierda= codificarHoffman(nodo->getHijoIzquierdo(),valor,(cadena+"0"));
+    if(derecha!=""){
+        return derecha;
+    }else{
+    return izquierda;
+    }
 }

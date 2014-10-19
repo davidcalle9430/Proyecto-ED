@@ -11,7 +11,7 @@ class Nodo
     public:
         Nodo();
 
-        T getContenido();
+        T getContenido()const;
        void setContenido(T nuevo);
        Nodo(T variable);
        Nodo<T>* getHijoIzquierdo();

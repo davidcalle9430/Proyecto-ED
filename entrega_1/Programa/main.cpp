@@ -4,11 +4,23 @@
 #include <string>
 #include "Arbol.h"
 #include "Intensidad.h"
-//HOLAS desde windos
-Volumen *p;
-int main(int argc, char** argv)
-{ 
 
+Volumen *p;
+using namespace std;
+void preOrden(Nodo<Intensidad>* nodo){
+
+    if(nodo!=NULL){
+            cout<<"i: "<<nodo->getContenido().getValor()<<" f: "<<nodo->getContenido().getFrecuencia()<<endl;
+           // system("pause");
+        preOrden(nodo->getHijoIzquierdo());
+        preOrden(nodo->getHijoDerecho());
+
+    }
+
+}
+int main(int argc, char** argv)
+{
+/*
     string op;
 
     //cin>>op;
@@ -136,7 +148,7 @@ int main(int argc, char** argv)
                 }
                 if(criterio=="mediana")
                 {
-                    Imagen2D* imagen= p->proyeccionZMediana();
+                         Imagen2D* imagen= p->proyeccionZMediana();
                     imagen->exportarImagen(nombreA);
                 }
 
@@ -148,9 +160,22 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
 }
 }
 }
+*/
+char* temp= new char[30];
+strcpy(temp, "img_08");
+Imagen2D* andrea= new Imagen2D(temp);
+cout<<"llega"<<endl;
+Arbol<Intensidad>* arbol=hoffman(andrea->calcularListaIntensidades());
+//preOrden(arbol->getCabeza());
+vector<vector<int> >* imagen= andrea->getImagen();
+cout<<"************ CODIFICACION **************"<<endl;
+for(int i=0;i<andrea->getFila();i++){
+ for(int j=0;j<andrea->getColumna();j++){
+        cout<<codificarHoffman(arbol->getCabeza(), (*(andrea->getImagen()))[i][j], "")<<endl;
+ system("pause");
 
-
-
+}
+}
     return 0;
 }
 

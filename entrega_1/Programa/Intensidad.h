@@ -5,23 +5,21 @@ private:
   int valor;
   int frecuencia;
 public:
+    bool operator <(const Intensidad& in)const{
+ if(frecuencia==in.getFrecuencia()){
+    return valor<in.getValor();
+ }
+   return frecuencia<in.getFrecuencia();
+  }
   Intensidad();
   Intensidad(int pValor, int pFrecuencia);
   int getValor()const;
-  void setValor(int nuevo);
+  void setValor(int pValor);
   int getFrecuencia()const;
-  void setFrecuencia(int valor);
-  bool operator <(const Intensidad& in)const{
+  void setFrecuencia(int pFrecuencia);
 
 
-  int a=frecuencia;
-  int b=in.getFrecuencia();
 
-   return a<b;
-  }
-  bool operator ==(const Intensidad& i)const{
-    return getValor()==i.getValor();
-  }
 };
 #include "Intensidad.hxx"
 #endif
