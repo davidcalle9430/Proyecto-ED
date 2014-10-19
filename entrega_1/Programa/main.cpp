@@ -4,20 +4,25 @@
 #include <string>
 #include "Arbol.h"
 #include "Intensidad.h"
+#include <fstream>
 
 Volumen *p;
 using namespace std;
-void preOrden(Nodo<Intensidad>* nodo){
+void preOrden(Nodo<Intensidad>* nodo)
+{
 
-    if(nodo!=NULL){
-            cout<<"i: "<<nodo->getContenido().getValor()<<" f: "<<nodo->getContenido().getFrecuencia()<<endl;
-           // system("pause");
+    if(nodo!=NULL)
+    {
+        cout<<"i: "<<nodo->getContenido().getValor()<<" f: "<<nodo->getContenido().getFrecuencia()<<endl;
+        // system("pause");
         preOrden(nodo->getHijoIzquierdo());
         preOrden(nodo->getHijoDerecho());
 
     }
 
 }
+
+
 int main(int argc, char** argv)
 {
 /*
@@ -163,19 +168,39 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
 */
 char* temp= new char[30];
 strcpy(temp, "img_08");
-Imagen2D* andrea= new Imagen2D(temp);
+//Imagen2D* andrea= new Imagen2D(temp);
 cout<<"llega"<<endl;
-Arbol<Intensidad>* arbol=hoffman(andrea->calcularListaIntensidades());
+ifstream lectura("img_08.huffman");
+//Arbol<Intensidad>* arbol=hoffman(andrea->calcularListaIntensidades());
 //preOrden(arbol->getCabeza());
-vector<vector<int> >* imagen= andrea->getImagen();
-cout<<"************ CODIFICACION **************"<<endl;
+//vector<vector<int> >* imagen= andrea->getImagen();
+int a;
+lectura>>a;
+cout<<"leo a: "<<a<<endl;
+lectura>>a;
+cout<<"leo a: "<<a<<endl;
+lectura>>a;
+cout<<"leo a: "<<a<<endl;
+cout<<"************ DECODIFCACION **************"<<endl;
+Imagen2D* andrea= new Imagen2D();
+char* memoria= new char[80];
+strcpy(memoria,"img_09");
+andrea->cargarHuffman(memoria);
+cout<<"acaba de cargar"<<endl;
+andrea->exportarImagen("img_09.pgm");
+//preOrden(arbol->getCabeza());
+
+
+/*
 for(int i=0;i<andrea->getFila();i++){
  for(int j=0;j<andrea->getColumna();j++){
         cout<<codificarHoffman(arbol->getCabeza(), (*(andrea->getImagen()))[i][j], "")<<endl;
  system("pause");
+ }}
+*/
 
-}
-}
+
+
     return 0;
 }
 

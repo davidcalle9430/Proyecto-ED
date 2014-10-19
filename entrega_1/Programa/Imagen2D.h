@@ -27,6 +27,7 @@ public:
     void exportarImagen(char* nom_arch);
     std::vector<Arbol<Intensidad> >* calcularListaIntensidades();
     Intensidad* buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista);
+    bool cargarHuffman(char* nombreArchivo);
 
 };
 #include "Imagen2D.hxx"

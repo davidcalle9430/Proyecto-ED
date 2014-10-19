@@ -197,8 +197,8 @@ std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades(){
 
 Arbol<Intensidad>* hoffman(vector<Arbol<Intensidad> >* lista){
  // cout<<"paso tam= "<<lista->size()<<endl;
- cout<<"el primer elemento es: "<<(*lista)[0].getCabeza()->getContenido().getFrecuencia()<<endl;
-  system("pause");
+ //cout<<"el primer elemento es: "<<(*lista)[0].getCabeza()->getContenido().getFrecuencia()<<endl;
+  //system("pause");
   while(lista->size()>1){
         sort(lista->begin(), lista->end());
 // saco el primero y el segundo
@@ -247,4 +247,118 @@ std::string codificarHoffman(Nodo<Intensidad>* nodo, int valor, std::string cade
     }else{
     return izquierda;
     }
+}
+
+void decodificarHuffman(Nodo<Intensidad>* nodo, ifstream& lectura)
+{
+    int valor;
+    int frecuencia;
+    lectura>>valor;
+    lectura>>frecuencia;
+    Intensidad* nueva= new Intensidad(valor, frecuencia);
+    nodo->setContenido(*nueva);
+    if(valor==-1)
+    {
+        if(nodo->getHijoIzquierdo()==NULL)
+        {
+            Nodo<Intensidad>* izq= new Nodo<Intensidad>(*nueva);
+            nodo->setHijoIzquierdo(izq);
+        }
+        decodificarHuffman(nodo->getHijoIzquierdo(),lectura);
+
+        if(nodo->getHijoDerecho()==NULL)
+        {
+            Nodo<Intensidad>* der= new Nodo<Intensidad>(*nueva);
+            nodo->setHijoDerecho(der);
+
+            decodificarHuffman(nodo->getHijoDerecho(),lectura);
+        }
+    }
+}
+int decodificarValor(Nodo<Intensidad>* nodo, string codificacion){
+    if(codificacion==""){
+        return nodo->getContenido().getValor();
+    }else{
+    if(codificacion[0]=='1'){
+            string cpy=codificacion;
+    cpy.erase(0,1);
+    return decodificarValor(nodo->getHijoDerecho(),cpy);
+    }else{
+            string cpy=codificacion;
+    cpy.erase(0,1);
+    return decodificarValor(nodo->getHijoIzquierdo(),cpy);
+    }
+    }
+
+
+}
+bool Imagen2D::cargarHuffman(char* nombreArchivo){
+
+strcat(nombreArchivo,".huffman");
+
+    Imagen2D* nueva= new Imagen2D();
+    ifstream lectura(nombreArchivo);
+
+    if(lectura)
+    {
+
+        char* codigo;
+        //codigo= new char[50];
+        //lectura.getline(codigo,50);
+        int width, height, x;
+
+
+
+        lectura>>height;
+        lectura>>width;
+        lectura>>x;
+        cout<<"la altura es: "<<height<<endl;
+         cout<<"el ancho  es: "<<width<<endl;
+
+         Arbol<Intensidad>* arbol= new Arbol<Intensidad>();
+Nodo<Intensidad>* nodo= new Nodo<Intensidad>();
+arbol->setCabeza(nodo);
+
+decodificarHuffman(arbol->getCabeza(),lectura);
+
+
+        vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
+
+
+
+        for(int i=0; i<height; i++)
+        {
+
+
+
+            for(int j=0; j<width; j++)
+            {
+
+                string temp;
+                lectura>>temp;
+                 int val=decodificarValor(arbol->getCabeza(), temp);
+                 //cout<<"guardo a "<<temp<<" con deco "<<val<<endl;
+                // system("pause");
+                (*(duracion))[i][j]= val;
+
+            }
+        }
+
+        vector< vector<int> >* temporal= duracion;
+           cout<<"meto en la  matriz"<<endl;
+        setImagen(temporal);
+         cout<<"meto en la  matriz"<<endl;
+        setFila(height);
+         cout<<"meto en la  matriz"<<endl;
+        setColumna(width);
+         cout<<"meto en la  matriz"<<endl;
+       // std::string p(codigo);
+         cout<<"meto en la  matriz"<<endl;
+        setFormato("P2");
+         cout<<"meto en la  matriz"<<endl;
+
+return true;
+
+}
+return false;
 }
