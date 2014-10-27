@@ -8,24 +8,12 @@
 
 Volumen *p;
 using namespace std;
-void preOrden(Nodo<Intensidad>* nodo)
-{
 
-    if(nodo!=NULL)
-    {
-        cout<<"i: "<<nodo->getContenido().getValor()<<" f: "<<nodo->getContenido().getFrecuencia()<<endl;
-        // system("pause");
-        preOrden(nodo->getHijoIzquierdo());
-        preOrden(nodo->getHijoDerecho());
-
-    }
-
-}
 
 
 int main(int argc, char** argv)
 {
-/*
+
     string op;
 
     //cin>>op;
@@ -163,41 +151,36 @@ int main(int argc, char** argv)
         }else{
 cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
 }
-}
-}
-*/
-char* temp= new char[30];
-strcpy(temp, "img_08");
-//Imagen2D* andrea= new Imagen2D(temp);
-cout<<"llega"<<endl;
-ifstream lectura("img_08.huffman");
-//Arbol<Intensidad>* arbol=hoffman(andrea->calcularListaIntensidades());
-//preOrden(arbol->getCabeza());
-//vector<vector<int> >* imagen= andrea->getImagen();
-int a;
-lectura>>a;
-cout<<"leo a: "<<a<<endl;
-lectura>>a;
-cout<<"leo a: "<<a<<endl;
-lectura>>a;
-cout<<"leo a: "<<a<<endl;
-cout<<"************ DECODIFCACION **************"<<endl;
-Imagen2D* andrea= new Imagen2D();
-char* memoria= new char[80];
-strcpy(memoria,"img_09");
-andrea->cargarHuffman(memoria);
-cout<<"acaba de cargar"<<endl;
-andrea->exportarImagen("img_09.pgm");
-//preOrden(arbol->getCabeza());
+       } else if(op=="codificar_imagen"){
+            char* nombre= new char[100];
+            cin>>nombre;
+            char* copia= new char[100];
+            strcpy(copia, nombre);
+            cout<<"codificando archivo por favor espere..."<<endl;
+            Imagen2D* imagen= new Imagen2D(nombre);
+            cout<<"creo la imagen"<<endl;
+            imagen->exportarHuffman(copia);
+             cout<<"llega"<<endl;
 
 
-/*
-for(int i=0;i<andrea->getFila();i++){
- for(int j=0;j<andrea->getColumna();j++){
-        cout<<codificarHoffman(arbol->getCabeza(), (*(andrea->getImagen()))[i][j], "")<<endl;
- system("pause");
- }}
-*/
+        }
+        else if(op=="decodificar_archivo")
+        {
+            char* nombre= new char[100];
+            cin>>nombre;
+
+            cout<<"decodificando archivo por favor espere..."<<endl;
+            char* copia= new char[100];
+            strcpy(copia, nombre);
+            strcat(copia, ".pgm");
+            Imagen2D* imagen= new Imagen2D();
+            imagen->cargarHuffman(nombre);
+
+            imagen->exportarImagen(copia);
+}
+}
+
+
 
 
 

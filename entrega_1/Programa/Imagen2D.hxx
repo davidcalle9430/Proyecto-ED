@@ -90,7 +90,7 @@ Imagen2D::Imagen2D(char * nombre)
 
             }
         }
-   cout<<"llega"<<endl;
+   cout<<"llega  "<<endl;
         vector< vector<int> >* temporal= duracion;
         setImagen(temporal);
         setFila(height);
@@ -100,9 +100,11 @@ Imagen2D::Imagen2D(char * nombre)
 
 
 
+   archivo.close();
+
+   cout<<" Archivo "<<nombre<< " cargado satisfactoriamente"<<endl;
 
     }
-   // cout<<"Archivo "<<nombre<< " cargado satisfactoriamente"<<endl:
     else
     {
         cout<<"El volumen no ha sido cargado en memoria "<<nombre<<endl;
@@ -292,13 +294,15 @@ int decodificarValor(Nodo<Intensidad>* nodo, string codificacion){
 
 
 }
-bool Imagen2D::cargarHuffman(char* nombreArchivo){
+bool Imagen2D::cargarHuffman(char* nombreArchivo)
+{
 
-strcat(nombreArchivo,".huffman");
+    strcat(nombreArchivo,".huffman");
 
     Imagen2D* nueva= new Imagen2D();
+      cout<<"llega"<<endl;
     ifstream lectura(nombreArchivo);
-
+    cout<<"llega"<<endl;
     if(lectura)
     {
 
@@ -313,13 +317,13 @@ strcat(nombreArchivo,".huffman");
         lectura>>width;
         lectura>>x;
         cout<<"la altura es: "<<height<<endl;
-         cout<<"el ancho  es: "<<width<<endl;
+        cout<<"el ancho  es: "<<width<<endl;
 
-         Arbol<Intensidad>* arbol= new Arbol<Intensidad>();
-Nodo<Intensidad>* nodo= new Nodo<Intensidad>();
-arbol->setCabeza(nodo);
+        Arbol<Intensidad>* arbol= new Arbol<Intensidad>();
+        Nodo<Intensidad>* nodo= new Nodo<Intensidad>();
+        arbol->setCabeza(nodo);
 
-decodificarHuffman(arbol->getCabeza(),lectura);
+        decodificarHuffman(arbol->getCabeza(),lectura);
 
 
         vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
@@ -336,29 +340,109 @@ decodificarHuffman(arbol->getCabeza(),lectura);
 
                 string temp;
                 lectura>>temp;
-                 int val=decodificarValor(arbol->getCabeza(), temp);
-                 //cout<<"guardo a "<<temp<<" con deco "<<val<<endl;
+                int val=decodificarValor(arbol->getCabeza(), temp);
+                //cout<<"guardo a "<<temp<<" con deco "<<val<<endl;
                 // system("pause");
                 (*(duracion))[i][j]= val;
 
             }
         }
-
+        lectura.close();
         vector< vector<int> >* temporal= duracion;
-           cout<<"meto en la  matriz"<<endl;
-        setImagen(temporal);
-         cout<<"meto en la  matriz"<<endl;
-        setFila(height);
-         cout<<"meto en la  matriz"<<endl;
-        setColumna(width);
-         cout<<"meto en la  matriz"<<endl;
-       // std::string p(codigo);
-         cout<<"meto en la  matriz"<<endl;
-        setFormato("P2");
-         cout<<"meto en la  matriz"<<endl;
 
-return true;
+        setImagen(temporal);
+
+        setFila(height);
+
+        setColumna(width);
+
+        // std::string p(codigo);
+
+        setFormato("P2");
+
+
+        return true;
+
+    }
+    cout<<"El archivo "<<nombreArchivo<<" no ha podido ser decodificado"<<endl;
+
+    return false;
+}
+
+void preOrden(Nodo<Intensidad>* nodo, ofstream& salida)
+{
+
+    if(nodo!=NULL)
+    {
+        salida<<nodo->getContenido().getValor()<<" "<<nodo->getContenido().getFrecuencia()<<" ";
+        // system("pause");
+        preOrden(nodo->getHijoIzquierdo(),salida);
+        preOrden(nodo->getHijoDerecho(),salida);
+
+    }
 
 }
-return false;
+
+std::string codificarValor(Nodo<Intensidad>* nodo, int valor, string retorno)
+{
+    if(nodo==NULL)
+    {
+        return "";
+    }
+
+    if(nodo!=NULL&&nodo->getContenido().getValor()==valor)
+    {    //cout<<"encuentro a "<<nodo->getContenido().getValor()<<endl;
+        return retorno;
+    }
+    else
+    {
+        std::string izq= retorno+"0";
+        std::string der= retorno+"1";
+        string izquierdo=codificarValor(nodo->getHijoIzquierdo(), valor, izq);
+        string derecho=codificarValor(nodo->getHijoDerecho(), valor, der);
+        if(izquierdo!="")
+        {
+            return izquierdo;
+        }
+        else
+        {
+            return derecho;
+        }
+    }
+
+
+
+return "";
+}
+void Imagen2D::exportarHuffman(char *nombre){
+
+Arbol<Intensidad>* arbol=hoffman(calcularListaIntensidades());
+//cout<<"la cabeza del arbol es: "<<arbol->getCabeza()->getContenido().getValor()<<endl;
+strcat(nombre, ".huffman");
+ofstream salida(nombre);
+if(salida){
+salida<<getColumna()<<" "<<getFila()<<" "<<255<<endl;
+preOrden(arbol->getCabeza(),salida);
+//reocorrer el vector
+
+    for (int i=0; i<fila; i++)
+    {
+
+
+        for (int j=0; j<columna; j++)
+        {
+            //falta codificar valor
+
+           // cout<<"llega"<<endl;
+            string valor=codificarValor(arbol->getCabeza(),(*(imagen))[i][j],"");
+            salida<<valor<<endl;
+        }
+
+    }
+salida.close();
+}else{
+
+// el error de codificar
+cout<<"La imagen: "<<nombre<<"No ha podido ser codificada"<<endl;
+}
 }

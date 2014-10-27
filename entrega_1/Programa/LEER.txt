@@ -1,0 +1,7 @@
+1) relación arbol-imágen?
+2) falta arreglar el menú, poner bien los cout(borrar los que sobran).
+3) TAD
+4) Esquemáticos
+5) verificar errores
+6) Acta de evaluación
+ y ya.
