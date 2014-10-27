@@ -154,29 +154,41 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
        } else if(op=="codificar_imagen"){
             char* nombre= new char[100];
             cin>>nombre;
+            char* salida= new char[100];
+            cin>>salida;
             char* copia= new char[100];
             strcpy(copia, nombre);
             cout<<"codificando archivo por favor espere..."<<endl;
-            Imagen2D* imagen= new Imagen2D(nombre);
-            cout<<"creo la imagen"<<endl;
-            imagen->exportarHuffman(copia);
-             cout<<"llega"<<endl;
-
-
+            Imagen2D* imagen= new Imagen2D();
+             if(imagen->cargarArchivo(nombre)){
+            if(imagen->exportarHuffman(salida)){
+              cout<<"la imagen "<<nombre<<" ha sido codificada exitosamente"<<endl;  
+            }else{
+                 cout<<"la imagen "<<nombre<<" no ha podido ser codificada"<<endl;  
+                 }
+             }else{
+                 cout<<"la imagen "<<nombre<<" no ha podido ser codificada"<<endl;  
+             }
         }
         else if(op=="decodificar_archivo")
         {
             char* nombre= new char[100];
             cin>>nombre;
+            char *salida= new char[100];
+            cin>>salida;
 
             cout<<"decodificando archivo por favor espere..."<<endl;
             char* copia= new char[100];
             strcpy(copia, nombre);
-            strcat(copia, ".pgm");
+            strcat(salida, ".pgm");
             Imagen2D* imagen= new Imagen2D();
-            imagen->cargarHuffman(nombre);
-
-            imagen->exportarImagen(copia);
+            if(imagen->cargarHuffman(nombre)){
+             imagen->exportarImagen(salida);
+             cout<<"El archivo "<<copia<<" ha sido decodificado extosamente"<<endl;
+            
+            }else{
+             cout<<"El archivo "<<copia<<" no ha podido ser decodificado"<<endl;
+            }
 }
 }
 

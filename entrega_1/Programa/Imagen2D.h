@@ -25,10 +25,11 @@ public:
     void setFormato(std::string nuevo);
     void imprimirImagen();
     void exportarImagen(char* nom_arch);
-    void exportarHuffman(char* nom_arch);
+    bool exportarHuffman(char* nom_arch);
     std::vector<Arbol<Intensidad> >* calcularListaIntensidades();
     Intensidad* buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista);
     bool cargarHuffman(char* nombreArchivo);
+    bool cargarArchivo(char* nombre);
 
 };
 #include "Imagen2D.hxx"

@@ -14,12 +14,8 @@ class Arbol
         Nodo<T>* getCabeza()const;
         void setCabeza(Nodo<T>* nuevo);
         void eliminarArbol(Nodo<T>* cabeza);
-        bool operator <(const Arbol<T>& arbol)const{
-          if(cabeza->getContenido()<(arbol.getCabeza()->getContenido())){
-            return true;
-          }
-          return false;
-        }
+        bool operator <(const Arbol<T>& arbol)const;
+        void eliminar();
 };
 #include "Arbol.hxx"
 #endif // ARBOL_H

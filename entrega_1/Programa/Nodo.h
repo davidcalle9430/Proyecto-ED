@@ -19,6 +19,7 @@ class Nodo
        void setHijoIzquierdo(Nodo<T>* nuevo);
        void setHijoDerecho(Nodo<T>* nuevo);
        bool esHoja();
+       void eliminar();
 
 
 };

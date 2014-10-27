@@ -34,4 +34,18 @@ void Arbol<T>::eliminarArbol(Nodo<T>* cabez)
         delete cabez;
     }
 }
+template<class T>
+void Arbol<T>::eliminar(){
+if(cabeza!=NULL){
+cabeza->eliminar();
+}
+}
+
+template<class T>
+bool Arbol<T>::operator<(const Arbol<T>& arbol)const{
+          if(cabeza->getContenido()<(arbol.getCabeza()->getContenido())){
+            return true;
+          }
+          return false;
+        }
 

@@ -27,7 +27,16 @@ template<class T>
 void Nodo<T>::setContenido(T nuevo){
  contenido=nuevo;
 }
-
+template<class T>
+void Nodo<T>::eliminar(){
+if(getHijoDerecho()!=NULL){
+hijoDerecho->eliminar();
+}
+if(getHijoIzquierdo()!=NULL){
+hijoIzquierdo->eliminar();
+}
+delete this;
+}
 template<class T>
 void Nodo<T>::setHijoIzquierdo(Nodo<T>* nuevo){
  hijoIzquierdo=nuevo;

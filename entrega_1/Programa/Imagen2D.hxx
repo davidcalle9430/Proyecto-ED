@@ -49,10 +49,8 @@ std::string Imagen2D::getFormato()
 {
     return formato;
 }
-
-Imagen2D::Imagen2D(char * nombre)
-{
-    strcat(nombre,".pgm");
+bool Imagen2D::cargarArchivo(char* nombre){
+strcat(nombre,".pgm");
 
     Imagen2D* nueva= new Imagen2D();
     fstream archivo(nombre);
@@ -69,8 +67,7 @@ Imagen2D::Imagen2D(char * nombre)
         archivo>>width;
         archivo>>height;
         archivo>>x;
-        cout<<"la altura es: "<<height<<endl;
-         cout<<"el ancho  es: "<<width<<endl;
+     
 
         vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
 
@@ -90,7 +87,70 @@ Imagen2D::Imagen2D(char * nombre)
 
             }
         }
-   cout<<"llega  "<<endl;
+  
+        vector< vector<int> >* temporal= duracion;
+        setImagen(temporal);
+        setFila(height);
+        setColumna(width);
+        std::string p(codigo);
+        setFormato(p);
+
+
+
+   archivo.close();
+
+  return true;
+    }
+    else
+    {   
+
+        setFila(-1);
+        setColumna(-1);
+      return false;
+
+    }
+
+}
+Imagen2D::Imagen2D(char * nombre)
+{
+    strcat(nombre,".pgm");
+
+    Imagen2D* nueva= new Imagen2D();
+    fstream archivo(nombre);
+
+    if(archivo)
+    {
+
+        char* codigo;
+        codigo= new char[50];
+        archivo.getline(codigo,50);
+        int width, height, x;
+
+
+        archivo>>width;
+        archivo>>height;
+        archivo>>x;
+     
+
+        vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
+
+
+
+        for(int i=0; i<height; i++)
+        {
+
+
+
+            for(int j=0; j<width; j++)
+            {
+
+                int temp;
+                archivo>>temp;
+                (*(duracion))[i][j]=temp;
+
+            }
+        }
+  
         vector< vector<int> >* temporal= duracion;
         setImagen(temporal);
         setFila(height);
@@ -106,7 +166,10 @@ Imagen2D::Imagen2D(char * nombre)
 
     }
     else
-    {
+    {   
+
+        setFila(-1);
+        setColumna(-1);
         cout<<"El volumen no ha sido cargado en memoria "<<nombre<<endl;
 
     }
@@ -169,9 +232,6 @@ std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades(){
          Intensidad* busqueda=buscarIntensidad(temporal,retorno);
          if(busqueda!=NULL){
            busqueda->setFrecuencia(busqueda->getFrecuencia()+1);
-           /* cout<<" se encuentra la frecuencia de "<<busqueda->getValor()<<" es "<<busqueda->getFrecuencia()<<endl;
-            system("pause");
-            */
             }else{
 
            retorno->push_back(*(temporal));
@@ -179,14 +239,14 @@ std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades(){
     }
   }
   sort(retorno->begin(), retorno->end());
-  //retorno->sort();
+
 
   vector<Arbol<Intensidad> >* lista= new vector<Arbol<Intensidad> >();
   int contador=0;
   for(deque<Intensidad>::iterator i=retorno->begin();i!=retorno->end();i++){
 
     Arbol<Intensidad>* miArbolito= new Arbol<Intensidad>();
- //cout<<"la intensidad es: "<<(*i).getValor()<<" frecuencia: "<<(*i).getFrecuencia()<<endl;
+ 
     contador+=(*i).getFrecuencia();
     Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*i);
     miArbolito->setCabeza(nodo);
@@ -198,12 +258,11 @@ std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades(){
 }
 
 Arbol<Intensidad>* hoffman(vector<Arbol<Intensidad> >* lista){
- // cout<<"paso tam= "<<lista->size()<<endl;
- //cout<<"el primer elemento es: "<<(*lista)[0].getCabeza()->getContenido().getFrecuencia()<<endl;
-  //system("pause");
+ 
+
   while(lista->size()>1){
         sort(lista->begin(), lista->end());
-// saco el primero y el segundo
+
 Arbol<Intensidad>* primero= &((*lista)[0]);
 Arbol<Intensidad>* segundo=&((*lista)[1]);
 Arbol<Intensidad>* nuevon= new Arbol<Intensidad>();
@@ -217,7 +276,7 @@ lista->erase(lista->begin());
 lista->erase(lista->begin());
 lista->push_back(*nuevon);
 
-//cout<<"ahora el tam es: "<<lista->size()<<endl;
+
   }
   return  &((*lista)[0]);
 }
@@ -225,8 +284,7 @@ lista->push_back(*nuevon);
 Intensidad* Imagen2D::buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista){
   for(std::deque<Intensidad>::iterator i=lista->begin();i!=lista->end();i++){
     if((*i).getValor()==(*intensidad).getValor()){
-          //  cout<<"se encontro a "<<(*i).getValor()<<" con frecuencia "<<(*i).getFrecuencia()<<endl;
-            // system("pause");
+         
       return &(*i);
     }
   }
@@ -300,15 +358,14 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
     strcat(nombreArchivo,".huffman");
 
     Imagen2D* nueva= new Imagen2D();
-      cout<<"llega"<<endl;
+   
     ifstream lectura(nombreArchivo);
-    cout<<"llega"<<endl;
+  
     if(lectura)
     {
 
         char* codigo;
-        //codigo= new char[50];
-        //lectura.getline(codigo,50);
+       
         int width, height, x;
 
 
@@ -316,8 +373,7 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
         lectura>>height;
         lectura>>width;
         lectura>>x;
-        cout<<"la altura es: "<<height<<endl;
-        cout<<"el ancho  es: "<<width<<endl;
+      
 
         Arbol<Intensidad>* arbol= new Arbol<Intensidad>();
         Nodo<Intensidad>* nodo= new Nodo<Intensidad>();
@@ -341,8 +397,7 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
                 string temp;
                 lectura>>temp;
                 int val=decodificarValor(arbol->getCabeza(), temp);
-                //cout<<"guardo a "<<temp<<" con deco "<<val<<endl;
-                // system("pause");
+                
                 (*(duracion))[i][j]= val;
 
             }
@@ -359,12 +414,13 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
         // std::string p(codigo);
 
         setFormato("P2");
-
+       arbol->eliminar();
 
         return true;
 
     }
-    cout<<"El archivo "<<nombreArchivo<<" no ha podido ser decodificado"<<endl;
+    
+ 
 
     return false;
 }
@@ -375,7 +431,7 @@ void preOrden(Nodo<Intensidad>* nodo, ofstream& salida)
     if(nodo!=NULL)
     {
         salida<<nodo->getContenido().getValor()<<" "<<nodo->getContenido().getFrecuencia()<<" ";
-        // system("pause");
+      
         preOrden(nodo->getHijoIzquierdo(),salida);
         preOrden(nodo->getHijoDerecho(),salida);
 
@@ -391,7 +447,7 @@ std::string codificarValor(Nodo<Intensidad>* nodo, int valor, string retorno)
     }
 
     if(nodo!=NULL&&nodo->getContenido().getValor()==valor)
-    {    //cout<<"encuentro a "<<nodo->getContenido().getValor()<<endl;
+    {    
         return retorno;
     }
     else
@@ -414,10 +470,10 @@ std::string codificarValor(Nodo<Intensidad>* nodo, int valor, string retorno)
 
 return "";
 }
-void Imagen2D::exportarHuffman(char *nombre){
+bool Imagen2D::exportarHuffman(char *nombre){
 
 Arbol<Intensidad>* arbol=hoffman(calcularListaIntensidades());
-//cout<<"la cabeza del arbol es: "<<arbol->getCabeza()->getContenido().getValor()<<endl;
+
 strcat(nombre, ".huffman");
 ofstream salida(nombre);
 if(salida){
@@ -431,18 +487,17 @@ preOrden(arbol->getCabeza(),salida);
 
         for (int j=0; j<columna; j++)
         {
-            //falta codificar valor
-
-           // cout<<"llega"<<endl;
+           
             string valor=codificarValor(arbol->getCabeza(),(*(imagen))[i][j],"");
             salida<<valor<<endl;
         }
 
     }
+arbol->eliminar();
 salida.close();
+return true;
 }else{
-
-// el error de codificar
-cout<<"La imagen: "<<nombre<<"No ha podido ser codificada"<<endl;
+return false;
+//cout<<"La imagen: "<<nombre<<"No ha podido ser codificada"<<endl;
 }
 }
