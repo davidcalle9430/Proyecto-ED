@@ -2,55 +2,65 @@
 template<class T>
 Nodo<T>::Nodo()
 {
- hijoDerecho=NULL;
- hijoIzquierdo=NULL;
+    hijoDerecho=NULL;
+    hijoIzquierdo=NULL;
 }
 template<class T>
 Nodo<T>::Nodo(T variable)
 {
-  contenido=variable;
- hijoDerecho=NULL;
- hijoIzquierdo=NULL;
+    contenido=variable;
+    hijoDerecho=NULL;
+    hijoIzquierdo=NULL;
 }
 
 template<class T>
-T Nodo<T>::getContenido()const{
-   
-return contenido;
+T Nodo<T>::getContenido()const
+{
+
+    return contenido;
 }
 template<class T>
-bool Nodo<T>::esHoja(){
-return (getHijoIzquierdo()==NULL&&getHijoDerecho()==NULL);
+bool Nodo<T>::esHoja()
+{
+    return (getHijoIzquierdo()==NULL&&getHijoDerecho()==NULL);
 }
 
 template<class T>
-void Nodo<T>::setContenido(T nuevo){
- contenido=nuevo;
+void Nodo<T>::setContenido(T nuevo)
+{
+    contenido=nuevo;
 }
 template<class T>
-void Nodo<T>::eliminar(){
-if(getHijoDerecho()!=NULL){
-hijoDerecho->eliminar();
-}
-if(getHijoIzquierdo()!=NULL){
-hijoIzquierdo->eliminar();
-}
-delete this;
+void Nodo<T>::eliminar()
+{
+    if(getHijoDerecho()!=NULL)
+    {
+        hijoDerecho->eliminar();
+    }
+    if(getHijoIzquierdo()!=NULL)
+    {
+        hijoIzquierdo->eliminar();
+    }
+    delete this;
 }
 template<class T>
-void Nodo<T>::setHijoIzquierdo(Nodo<T>* nuevo){
- hijoIzquierdo=nuevo;
+void Nodo<T>::setHijoIzquierdo(Nodo<T>* nuevo)
+{
+    hijoIzquierdo=nuevo;
 }
 
 template<class T>
-void Nodo<T>::setHijoDerecho(Nodo<T>* nuevo){
- hijoDerecho=nuevo;
+void Nodo<T>::setHijoDerecho(Nodo<T>* nuevo)
+{
+    hijoDerecho=nuevo;
 }
 template<class T>
-Nodo<T>* Nodo<T>::getHijoIzquierdo(){
-return  hijoIzquierdo;
+Nodo<T>* Nodo<T>::getHijoIzquierdo()
+{
+    return  hijoIzquierdo;
 }
 template<class T>
-Nodo<T>* Nodo<T>::getHijoDerecho(){
-return  hijoDerecho;
+Nodo<T>* Nodo<T>::getHijoDerecho()
+{
+    return  hijoDerecho;
 }

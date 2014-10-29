@@ -49,8 +49,9 @@ std::string Imagen2D::getFormato()
 {
     return formato;
 }
-bool Imagen2D::cargarArchivo(char* nombre){
-strcat(nombre,".pgm");
+bool Imagen2D::cargarArchivo(char* nombre)
+{
+//strcat(nombre,".pgm");
 
     Imagen2D* nueva= new Imagen2D();
     fstream archivo(nombre);
@@ -67,7 +68,7 @@ strcat(nombre,".pgm");
         archivo>>width;
         archivo>>height;
         archivo>>x;
-     
+
 
         vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
 
@@ -87,7 +88,7 @@ strcat(nombre,".pgm");
 
             }
         }
-  
+
         vector< vector<int> >* temporal= duracion;
         setImagen(temporal);
         setFila(height);
@@ -97,16 +98,16 @@ strcat(nombre,".pgm");
 
 
 
-   archivo.close();
+        archivo.close();
 
-  return true;
+        return true;
     }
     else
-    {   
+    {
 
         setFila(-1);
         setColumna(-1);
-      return false;
+        return false;
 
     }
 
@@ -130,7 +131,7 @@ Imagen2D::Imagen2D(char * nombre)
         archivo>>width;
         archivo>>height;
         archivo>>x;
-     
+
 
         vector< vector<int > >* duracion= new vector< vector<int > > (height, vector<int> (width));
 
@@ -150,7 +151,7 @@ Imagen2D::Imagen2D(char * nombre)
 
             }
         }
-  
+
         vector< vector<int> >* temporal= duracion;
         setImagen(temporal);
         setFila(height);
@@ -160,13 +161,13 @@ Imagen2D::Imagen2D(char * nombre)
 
 
 
-   archivo.close();
+        archivo.close();
 
-   cout<<" Archivo "<<nombre<< " cargado satisfactoriamente"<<endl;
+        cout<<" Archivo "<<nombre<< " cargado satisfactoriamente"<<endl;
 
     }
     else
-    {   
+    {
 
         setFila(-1);
         setColumna(-1);
@@ -194,118 +195,141 @@ void Imagen2D::setColumna(int tam)
 void Imagen2D::exportarImagen(char* nom_arch)
 {
     ofstream arch(nom_arch);
-    if(arch){
-    arch<<"P2"<<endl;
-    arch<<fila<<" "<<columna<<endl;
-    arch<<"255"<<endl;
-    for (int i=0; i<(*(imagen)).size (); i++)
+    if(arch)
     {
-
-        for (int j=0; j<(*(imagen))[i].size (); j++)
+        arch<<"P2"<<endl;
+        arch<<fila<<" "<<columna<<endl;
+        arch<<"255"<<endl;
+        for (int i=0; i<(*(imagen)).size (); i++)
         {
 
-            arch<<(*(imagen))[i][j]<<" ";
+            for (int j=0; j<(*(imagen))[i].size (); j++)
+            {
+
+                arch<<(*(imagen))[i][j]<<" ";
+            }
+            arch<<endl;
         }
-        arch<<endl;
-    }
         cout<<"La proyeccion 2D del volumen en memoria ha sido generada"<<endl;
 
-    }else{
-    cout<<"La proyeccion 2D del volumen en memoria no ha podido ser generada"<<endl;
+    }
+    else
+    {
+        cout<<"La proyeccion 2D del volumen en memoria no ha podido ser generada"<<endl;
     }
     arch.close();
 }
-bool comparadora( Intensidad& i, Intensidad& i2){
-  return i.getFrecuencia()<i2.getFrecuencia();
+bool comparadora( Intensidad& i, Intensidad& i2)
+{
+    return i.getFrecuencia()<i2.getFrecuencia();
 }
 
-std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades(){
-  deque<Intensidad>* retorno= new deque<Intensidad>();
-  for(int i=0; i<fila;i++){
-    for(int j=0; j<columna;j++){
-         int valor=(*(imagen))[i][j];
-         Intensidad* temporal= new Intensidad();
-         temporal->setValor(valor);
-         temporal->setFrecuencia(1);
+std::vector<Arbol<Intensidad> >* Imagen2D::calcularListaIntensidades()
+{
+    deque<Intensidad>* retorno= new deque<Intensidad>();
+    for(int i=0; i<fila; i++)
+    {
+        for(int j=0; j<columna; j++)
+        {
+            int valor=(*(imagen))[i][j];
+            Intensidad* temporal= new Intensidad();
+            temporal->setValor(valor);
+            temporal->setFrecuencia(1);
 
 
-         Intensidad* busqueda=buscarIntensidad(temporal,retorno);
-         if(busqueda!=NULL){
-           busqueda->setFrecuencia(busqueda->getFrecuencia()+1);
-            }else{
+            Intensidad* busqueda=buscarIntensidad(temporal,retorno);
+            if(busqueda!=NULL)
+            {
+                busqueda->setFrecuencia(busqueda->getFrecuencia()+1);
+            }
+            else
+            {
 
-           retorno->push_back(*(temporal));
-         }
+                retorno->push_back(*(temporal));
+            }
+        }
     }
-  }
-  sort(retorno->begin(), retorno->end());
+    sort(retorno->begin(), retorno->end());
 
 
-  vector<Arbol<Intensidad> >* lista= new vector<Arbol<Intensidad> >();
-  int contador=0;
-  for(deque<Intensidad>::iterator i=retorno->begin();i!=retorno->end();i++){
+    vector<Arbol<Intensidad> >* lista= new vector<Arbol<Intensidad> >();
+    int contador=0;
+    for(deque<Intensidad>::iterator i=retorno->begin(); i!=retorno->end(); i++)
+    {
 
-    Arbol<Intensidad>* miArbolito= new Arbol<Intensidad>();
- 
-    contador+=(*i).getFrecuencia();
-    Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*i);
-    miArbolito->setCabeza(nodo);
-    lista->push_back(*miArbolito);
-  }
+        Arbol<Intensidad>* miArbolito= new Arbol<Intensidad>();
+
+        contador+=(*i).getFrecuencia();
+        Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*i);
+        miArbolito->setCabeza(nodo);
+        lista->push_back(*miArbolito);
+    }
 
 
-  return lista;
+    return lista;
 }
 
-Arbol<Intensidad>* hoffman(vector<Arbol<Intensidad> >* lista){
- 
+Arbol<Intensidad>* hoffman(vector<Arbol<Intensidad> >* lista)
+{
 
-  while(lista->size()>1){
+
+    while(lista->size()>1)
+    {
         sort(lista->begin(), lista->end());
 
-Arbol<Intensidad>* primero= &((*lista)[0]);
-Arbol<Intensidad>* segundo=&((*lista)[1]);
-Arbol<Intensidad>* nuevon= new Arbol<Intensidad>();
-int suma= primero->getCabeza()->getContenido().getFrecuencia()+segundo->getCabeza()->getContenido().getFrecuencia();
-Intensidad* nueva= new Intensidad(-1,suma);
-Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*nueva);
-nuevon->setCabeza(nodo);
-nodo->setHijoDerecho(segundo->getCabeza());
-nodo->setHijoIzquierdo(primero->getCabeza());
-lista->erase(lista->begin());
-lista->erase(lista->begin());
-lista->push_back(*nuevon);
+        Arbol<Intensidad>* primero= &((*lista)[0]);
+        Arbol<Intensidad>* segundo=&((*lista)[1]);
+        Arbol<Intensidad>* nuevon= new Arbol<Intensidad>();
+        int suma= primero->getCabeza()->getContenido().getFrecuencia()+segundo->getCabeza()->getContenido().getFrecuencia();
+        Intensidad* nueva= new Intensidad(-1,suma);
+        Nodo<Intensidad>* nodo= new Nodo<Intensidad>(*nueva);
+        nuevon->setCabeza(nodo);
+        nodo->setHijoDerecho(segundo->getCabeza());
+        nodo->setHijoIzquierdo(primero->getCabeza());
+        lista->erase(lista->begin());
+        lista->erase(lista->begin());
+        lista->push_back(*nuevon);
 
 
-  }
-  return  &((*lista)[0]);
+    }
+    return  &((*lista)[0]);
 }
 
-Intensidad* Imagen2D::buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista){
-  for(std::deque<Intensidad>::iterator i=lista->begin();i!=lista->end();i++){
-    if((*i).getValor()==(*intensidad).getValor()){
-         
-      return &(*i);
+Intensidad* Imagen2D::buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista)
+{
+    for(std::deque<Intensidad>::iterator i=lista->begin(); i!=lista->end(); i++)
+    {
+        if((*i).getValor()==(*intensidad).getValor())
+        {
+
+            return &(*i);
+        }
     }
-  }
-  return NULL;
+    return NULL;
 }
-std::string codificarHoffman(Nodo<Intensidad>* nodo, int valor, std::string cadena){
-    if(nodo==NULL){
-      return "";
+std::string codificarHoffman(Nodo<Intensidad>* nodo, int valor, std::string cadena)
+{
+    if(nodo==NULL)
+    {
+        return "";
     }
-    if(nodo!=NULL&&nodo->getContenido().getValor()==valor){
+    if(nodo!=NULL&&nodo->getContenido().getValor()==valor)
+    {
         return cadena;
     }
-     if(nodo!=NULL&&nodo->getHijoIzquierdo()==NULL&&nodo->getHijoIzquierdo()==NULL&&nodo->getContenido().getValor()!=valor){
+    if(nodo!=NULL&&nodo->getHijoIzquierdo()==NULL&&nodo->getHijoIzquierdo()==NULL&&nodo->getContenido().getValor()!=valor)
+    {
         return "";
     }
     std::string derecha= codificarHoffman(nodo->getHijoDerecho(),valor,(cadena+"1"));
-      std::string izquierda= codificarHoffman(nodo->getHijoIzquierdo(),valor,(cadena+"0"));
-    if(derecha!=""){
+    std::string izquierda= codificarHoffman(nodo->getHijoIzquierdo(),valor,(cadena+"0"));
+    if(derecha!="")
+    {
         return derecha;
-    }else{
-    return izquierda;
+    }
+    else
+    {
+        return izquierda;
     }
 }
 
@@ -335,19 +359,26 @@ void decodificarHuffman(Nodo<Intensidad>* nodo, ifstream& lectura)
         }
     }
 }
-int decodificarValor(Nodo<Intensidad>* nodo, string codificacion){
-    if(codificacion==""){
+int decodificarValor(Nodo<Intensidad>* nodo, string codificacion)
+{
+    if(codificacion=="")
+    {
         return nodo->getContenido().getValor();
-    }else{
-    if(codificacion[0]=='1'){
-            string cpy=codificacion;
-    cpy.erase(0,1);
-    return decodificarValor(nodo->getHijoDerecho(),cpy);
-    }else{
-            string cpy=codificacion;
-    cpy.erase(0,1);
-    return decodificarValor(nodo->getHijoIzquierdo(),cpy);
     }
+    else
+    {
+        if(codificacion[0]=='1')
+        {
+            string cpy=codificacion;
+            cpy.erase(0,1);
+            return decodificarValor(nodo->getHijoDerecho(),cpy);
+        }
+        else
+        {
+            string cpy=codificacion;
+            cpy.erase(0,1);
+            return decodificarValor(nodo->getHijoIzquierdo(),cpy);
+        }
     }
 
 
@@ -355,17 +386,17 @@ int decodificarValor(Nodo<Intensidad>* nodo, string codificacion){
 bool Imagen2D::cargarHuffman(char* nombreArchivo)
 {
 
-    strcat(nombreArchivo,".huffman");
+    // strcat(nombreArchivo,".huffman");
 
     Imagen2D* nueva= new Imagen2D();
-   
+
     ifstream lectura(nombreArchivo);
-  
+
     if(lectura)
     {
 
         char* codigo;
-       
+
         int width, height, x;
 
 
@@ -373,7 +404,7 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
         lectura>>height;
         lectura>>width;
         lectura>>x;
-      
+
 
         Arbol<Intensidad>* arbol= new Arbol<Intensidad>();
         Nodo<Intensidad>* nodo= new Nodo<Intensidad>();
@@ -397,7 +428,7 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
                 string temp;
                 lectura>>temp;
                 int val=decodificarValor(arbol->getCabeza(), temp);
-                
+
                 (*(duracion))[i][j]= val;
 
             }
@@ -414,13 +445,13 @@ bool Imagen2D::cargarHuffman(char* nombreArchivo)
         // std::string p(codigo);
 
         setFormato("P2");
-       arbol->eliminar();
+        arbol->eliminar();
 
         return true;
 
     }
-    
- 
+
+
 
     return false;
 }
@@ -431,7 +462,7 @@ void preOrden(Nodo<Intensidad>* nodo, ofstream& salida)
     if(nodo!=NULL)
     {
         salida<<nodo->getContenido().getValor()<<" "<<nodo->getContenido().getFrecuencia()<<" ";
-      
+
         preOrden(nodo->getHijoIzquierdo(),salida);
         preOrden(nodo->getHijoDerecho(),salida);
 
@@ -447,7 +478,7 @@ std::string codificarValor(Nodo<Intensidad>* nodo, int valor, string retorno)
     }
 
     if(nodo!=NULL&&nodo->getContenido().getValor()==valor)
-    {    
+    {
         return retorno;
     }
     else
@@ -468,36 +499,40 @@ std::string codificarValor(Nodo<Intensidad>* nodo, int valor, string retorno)
 
 
 
-return "";
+    return "";
 }
-bool Imagen2D::exportarHuffman(char *nombre){
+bool Imagen2D::exportarHuffman(char *nombre)
+{
 
-Arbol<Intensidad>* arbol=hoffman(calcularListaIntensidades());
+    Arbol<Intensidad>* arbol=hoffman(calcularListaIntensidades());
 
-strcat(nombre, ".huffman");
-ofstream salida(nombre);
-if(salida){
-salida<<getColumna()<<" "<<getFila()<<" "<<255<<endl;
-preOrden(arbol->getCabeza(),salida);
+//strcat(nombre, ".huffman");
+    ofstream salida(nombre);
+    if(salida)
+    {
+        salida<<getColumna()<<" "<<getFila()<<" "<<255<<endl;
+        preOrden(arbol->getCabeza(),salida);
 //reocorrer el vector
 
-    for (int i=0; i<fila; i++)
-    {
-
-
-        for (int j=0; j<columna; j++)
+        for (int i=0; i<fila; i++)
         {
-           
-            string valor=codificarValor(arbol->getCabeza(),(*(imagen))[i][j],"");
-            salida<<valor<<endl;
-        }
 
+
+            for (int j=0; j<columna; j++)
+            {
+
+                string valor=codificarValor(arbol->getCabeza(),(*(imagen))[i][j],"");
+                salida<<valor<<endl;
+            }
+
+        }
+        arbol->eliminar();
+        salida.close();
+        return true;
     }
-arbol->eliminar();
-salida.close();
-return true;
-}else{
-return false;
+    else
+    {
+        return false;
 //cout<<"La imagen: "<<nombre<<"No ha podido ser codificada"<<endl;
-}
+    }
 }

@@ -180,7 +180,6 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
             cout<<"decodificando archivo por favor espere..."<<endl;
             char* copia= new char[100];
             strcpy(copia, nombre);
-            strcat(salida, ".pgm");
             Imagen2D* imagen= new Imagen2D();
             if(imagen->cargarHuffman(nombre)){
              imagen->exportarImagen(salida);
@@ -191,11 +190,6 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
             }
 }
 }
-
-
-
-
-
     return 0;
 }
 

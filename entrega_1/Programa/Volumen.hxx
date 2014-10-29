@@ -64,17 +64,18 @@ Volumen::Volumen(char *nombreBase, int total)
             strcat(nombreCompleto, nombreBase);
             strcat(nombreCompleto, "0");
             strcat(nombreCompleto, variable);
-               char *copia= new char[100];
-             strcpy(copia,nombreCompleto);
-              strcat(copia,".pgm");
-             fstream archivo(copia);
-             if(archivo){
+            char *copia= new char[100];
+            strcpy(copia,nombreCompleto);
+            strcat(copia,".pgm");
+            fstream archivo(copia);
+            if(archivo)
+            {
                 archivo.close();
 
                 Imagen2D agrego(nombreCompleto);
-                 (*(imagenes))[i-1]=agrego;
-                 total1++;
-             }
+                (*(imagenes))[i-1]=agrego;
+                total1++;
+            }
 
         }
         else
@@ -88,18 +89,19 @@ Volumen::Volumen(char *nombreBase, int total)
             strcat(nombreCompleto, variable);
 
 
-             // ahh ya se jumm
-             char *copia= new char[100];
-             strcpy(copia,nombreCompleto);
-              strcat(copia,".pgm");
-             fstream archivo(copia);
-             if(archivo){
+            // ahh ya se jumm
+            char *copia= new char[100];
+            strcpy(copia,nombreCompleto);
+            strcat(copia,".pgm");
+            fstream archivo(copia);
+            if(archivo)
+            {
                 archivo.close();
 
                 Imagen2D agrego(nombreCompleto);
-                 (*(imagenes))[i-1]=agrego;
-                 total1++;
-             }
+                (*(imagenes))[i-1]=agrego;
+                total1++;
+            }
 
 
         }
@@ -182,11 +184,11 @@ Imagen2D* Volumen::proyeccionYPromedio()
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* promedio= new vector< vector<int > > ((tamanio), vector<int> (ima.getFila()));
     inicializarVector(promedio);
-for(int j=0; j<ima.getColumna(); j++)
+    for(int j=0; j<ima.getColumna(); j++)
     {
 
 
- for(int i=0; i<ima.getFila(); i++)
+        for(int i=0; i<ima.getFila(); i++)
         {
 
 
@@ -202,7 +204,7 @@ for(int j=0; j<ima.getColumna(); j++)
         }
 
     }
-  promedioVector(promedio,ima.getColumna());
+    promedioVector(promedio,ima.getColumna());
     proyeccion->setImagen(promedio);
     proyeccion->setFila(ima.getFila());
     proyeccion->setColumna(tamanio);
@@ -243,8 +245,8 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 }
 
- Imagen2D* Volumen:: proyeccionZMediana()
- {
+Imagen2D* Volumen:: proyeccionZMediana()
+{
 
     Imagen2D* proyeccion= new Imagen2D();
 
@@ -265,18 +267,21 @@ Imagen2D* Volumen::proyeccionXPromedio()
             vector<int> *temp=new vector<int>(tamanio);
             for(int k=0; k<tamanio; k++)
             {
-                 (*(temp))[k]=((*(*(imagenes))[k].getImagen())[i][j]);
-               }
+                (*(temp))[k]=((*(*(imagenes))[k].getImagen())[i][j]);
+            }
 
-           sort ((*(temp)).begin(),(*(temp)).end());
-                
-                 if(tamanio%2!=0){
+            sort ((*(temp)).begin(),(*(temp)).end());
 
-            (*(mediana))[j][i]=(*(temp))[tamanio/2];
-               }else{
+            if(tamanio%2!=0)
+            {
 
-                    (*(mediana))[j][i]=  ((*(temp))[tamanio/2]+(*(temp))[(tamanio/2)-1])/2;
-                 }              
+                (*(mediana))[j][i]=(*(temp))[tamanio/2];
+            }
+            else
+            {
+
+                (*(mediana))[j][i]=  ((*(temp))[tamanio/2]+(*(temp))[(tamanio/2)-1])/2;
+            }
 
             delete temp;
 
@@ -288,11 +293,11 @@ Imagen2D* Volumen::proyeccionXPromedio()
     proyeccion->setColumna(ima.getColumna());
     return (proyeccion);
 
- }
+}
 
-  Imagen2D* Volumen:: proyeccionYMediana()
- {
-      Imagen2D* proyeccion= new Imagen2D();
+Imagen2D* Volumen:: proyeccionYMediana()
+{
+    Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > (tamanio,vector<int> (ima.getFila()));
     inicializarVector(mediana);
@@ -311,12 +316,15 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 
             }
-           sort (temp.begin(),temp.end());
-                  if(ima.getColumna()%2!=0){
-            (*(mediana))[k][i]=temp[ima.getColumna()/2];
-            }else{
-               (*(mediana))[k][i]=(temp[ima.getColumna()/2]+temp[(ima.getColumna()/2)-1])/2;
-               }
+            sort (temp.begin(),temp.end());
+            if(ima.getColumna()%2!=0)
+            {
+                (*(mediana))[k][i]=temp[ima.getColumna()/2];
+            }
+            else
+            {
+                (*(mediana))[k][i]=(temp[ima.getColumna()/2]+temp[(ima.getColumna()/2)-1])/2;
+            }
 
         }
     }
@@ -327,12 +335,12 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
     return (proyeccion);
 
- }
+}
 
 
-   Imagen2D* Volumen:: proyeccionXMediana()
- {
-      Imagen2D* proyeccion= new Imagen2D();
+Imagen2D* Volumen:: proyeccionXMediana()
+{
+    Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > ((tamanio), vector<int> (ima.getColumna()));
     inicializarVector(mediana);
@@ -351,12 +359,15 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 
             }
-           sort (temp.begin(),temp.end());
-             if(ima.getFila()%2!=0){
-            (*(mediana))[k][j]=temp[ima.getFila()/2];
-             }else{
+            sort (temp.begin(),temp.end());
+            if(ima.getFila()%2!=0)
+            {
+                (*(mediana))[k][j]=temp[ima.getFila()/2];
+            }
+            else
+            {
                 (*(mediana))[k][j]=(temp[ima.getFila()/2]+temp[(ima.getFila()/2)-1])/2;
-                } 
+            }
         }
     }
 
@@ -365,11 +376,11 @@ Imagen2D* Volumen::proyeccionXPromedio()
     proyeccion->setColumna(tamanio);
     return (proyeccion);
 
- }
+}
 
-  Imagen2D* Volumen:: proyeccionZMaximo()
-  {
-      Imagen2D* proyeccion= new Imagen2D();
+Imagen2D* Volumen:: proyeccionZMaximo()
+{
+    Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > (ima.getFila(), vector<int> (ima.getColumna()));
     inicializarVector(mediana);
@@ -387,7 +398,7 @@ Imagen2D* Volumen::proyeccionXPromedio()
                 temp[k]=((*(*(imagenes))[k].getImagen())[i][j]);
 
             }
-           sort (temp.begin(),temp.end());
+            sort (temp.begin(),temp.end());
             (*(mediana))[i][j]=temp[tamanio-1];
         }
     }
@@ -398,11 +409,11 @@ Imagen2D* Volumen::proyeccionXPromedio()
     return (proyeccion);
 
 
-  }
+}
 
-  Imagen2D* Volumen:: proyeccionYMaximo()
- {
-      Imagen2D* proyeccion= new Imagen2D();
+Imagen2D* Volumen:: proyeccionYMaximo()
+{
+    Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > ( (tamanio), vector<int>(ima.getFila()));
     inicializarVector(mediana);
@@ -421,7 +432,7 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 
             }
-           sort (temp.begin(),temp.end());
+            sort (temp.begin(),temp.end());
             (*(mediana))[k][i]=temp[ima.getColumna()-1];
         }
     }
@@ -431,10 +442,10 @@ Imagen2D* Volumen::proyeccionXPromedio()
     proyeccion->setColumna(tamanio);
     return (proyeccion);
 
- }
+}
 
-  Imagen2D* Volumen:: proyeccionXMaximo()
- {
+Imagen2D* Volumen:: proyeccionXMaximo()
+{
     Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > ( (tamanio), vector<int>(ima.getColumna()));
@@ -454,7 +465,7 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 
             }
-           sort (temp.begin(),temp.end());
+            sort (temp.begin(),temp.end());
             (*(mediana))[k][j]=temp[ima.getFila()-1];
         }
     }
@@ -464,11 +475,11 @@ Imagen2D* Volumen::proyeccionXPromedio()
     proyeccion->setColumna(tamanio);
     return (proyeccion);
 
- }
+}
 
- Imagen2D* Volumen:: proyeccionZMinimo()
-  {
-      Imagen2D* proyeccion= new Imagen2D();
+Imagen2D* Volumen:: proyeccionZMinimo()
+{
+    Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > (ima.getFila(), vector<int> (ima.getColumna()));
     inicializarVector(mediana);
@@ -486,7 +497,7 @@ Imagen2D* Volumen::proyeccionXPromedio()
                 temp[k]=((*(*(imagenes))[k].getImagen())[i][j]);
 
             }
-           sort (temp.begin(),temp.end());
+            sort (temp.begin(),temp.end());
             (*(mediana))[i][j]=temp[0];
         }
     }
@@ -497,11 +508,11 @@ Imagen2D* Volumen::proyeccionXPromedio()
     return (proyeccion);
 
 
-  }
+}
 
-  Imagen2D* Volumen:: proyeccionYMinimo()
- {
-      Imagen2D* proyeccion= new Imagen2D();
+Imagen2D* Volumen:: proyeccionYMinimo()
+{
+    Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > ((tamanio), vector<int> (ima.getFila()));
     inicializarVector(mediana);
@@ -520,7 +531,7 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 
             }
-           sort (temp.begin(),temp.end());
+            sort (temp.begin(),temp.end());
             (*(mediana))[k][i]=temp[0];
         }
     }
@@ -530,10 +541,10 @@ Imagen2D* Volumen::proyeccionXPromedio()
     proyeccion->setColumna(tamanio);
     return (proyeccion);
 
- }
+}
 
-  Imagen2D* Volumen:: proyeccionXMinimo()
- {
+Imagen2D* Volumen:: proyeccionXMinimo()
+{
     Imagen2D* proyeccion= new Imagen2D();
     Imagen2D ima=(*(imagenes))[0];
     vector< vector<int > >* mediana= new vector< vector<int > > ((tamanio), vector<int> (ima.getColumna()) );
@@ -553,7 +564,7 @@ Imagen2D* Volumen::proyeccionXPromedio()
 
 
             }
-           sort (temp.begin(),temp.end());
+            sort (temp.begin(),temp.end());
             (*(mediana))[k][j]=temp[0];
         }
     }
@@ -563,5 +574,5 @@ Imagen2D* Volumen::proyeccionXPromedio()
     proyeccion->setColumna(tamanio);
     return (proyeccion);
 
- }
+}
 
