@@ -15,7 +15,8 @@ int main(int argc, char** argv)
 {
 
     string op;
-
+    op="";
+    p=NULL;
     //cin>>op;
     while(op!="salir")
     {
@@ -35,7 +36,7 @@ int main(int argc, char** argv)
         {
             cin>>nom_arch>>tam;
             if(tam<=100&&tam>=0){
-
+           delete p;
             p= new Volumen(nom_arch,tam);
              if(p->getTamanio()==0){
                cout<<"El volumen "<<nom_arch<<" no ha podido ser cargado"<<endl;
@@ -52,7 +53,7 @@ int main(int argc, char** argv)
             cin>>direccion;
 
 
-            if(p->getTamanio()>0){
+            if(p!=NULL&&p->getTamanio()>0){
 
             //cout<<"Direccion "<<direccion<<endl;
             if(direccion=="x")
