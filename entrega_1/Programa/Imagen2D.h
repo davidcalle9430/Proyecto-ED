@@ -5,6 +5,7 @@
 #include <list>
 #include "Intensidad.h"
 #include "Arbol.h"
+
 class Imagen2D
 {
 private:
@@ -16,10 +17,10 @@ public:
     Imagen2D();
     Imagen2D(char* nombre);
     int getFila();
-    void setFila(int tam);
     int getColumna();
-    void setColumna(int tam);
     std::vector<std::vector<int> >* getImagen();
+    void setFila(int tam);
+    void setColumna(int tam);
     void setImagen(std::vector<std::vector<int> >* nuevo);
     std::string getFormato();
     void setFormato(std::string nuevo);
@@ -30,7 +31,6 @@ public:
     Intensidad* buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista);
     bool cargarHuffman(char* nombreArchivo);
     bool cargarArchivo(char* nombre);
-
 };
 #include "Imagen2D.hxx"
 #endif

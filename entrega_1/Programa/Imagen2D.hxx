@@ -4,8 +4,8 @@
 #include <list>
 #include <deque>
 #include "cstring"
-#include "Arbol.h"
-#include "Intensidad.h"
+#include "Grafo.h"
+
 using namespace std;
 
 
@@ -109,6 +109,83 @@ bool Imagen2D::cargarArchivo(char* nombre)
         setColumna(-1);
         return false;
 
+    }
+
+}
+bool colorearGrafo(Grafo <Region> *grafito,int numColores, Imagen2D* imagen)
+{
+    int color=255/numColores;
+    vector<int> colores;
+    int contColores=0;
+    for (int i=color; i<255; i+=color)
+    {
+        colores.push_back(i+(i-color)/2);
+    }
+
+    if(colores.size()<grafito->getListaAristas()->size())
+    {
+        (*grafito->getListaAristas())[0][0]->getFinArista()->getContenido().setColorNuevo(colores[0]);
+        contColores++;
+
+        for(int j=0; j <grafito->getListaAristas()->size(); j++)
+        {
+            Region region;
+            region.setIdentificador(j);
+            Vertice<Region> *vertice= new Vertice<Region>(region);
+            //vector<Arista<Region>* >* adyacentes=grafito->buscarAdyacentes((*grafito->getListaAristas())[j][0]->getFinArista());
+           cout<<"para "<<(*grafito->getListaAristas())[j][0]->getFinArista()->getContenido().getIdentificador()<<endl;
+            for(int k=1; k<(*grafito->getListaAristas())[j].size(); k++)
+            {
+                if(contColores==colores.size())
+                {
+                    /* busco reutilzar algún color */
+                   // vector<Arista<Region>* >* adyacentes1=grafito->buscarAdyacentes((*adyacentes)[k]->getFinArista());
+                    for(int p=0; p<colores.size(); p++)
+                    {
+                        bool encontre=false;
+                        for(int s=1; s<(*grafito->getListaAristas())[k].size(); s++)
+                        {
+                            if((*grafito->getListaAristas())[k][s]->getFinArista()->getContenido().getColorNuevo()==colores[p])
+                            {
+                                encontre=true;
+                            }
+                        }
+                        if(!encontre)
+                        {
+                            (*grafito->getListaAristas())[k][0]->getFinArista()->getContenido().setColorNuevo(colores[p]);
+                            p=colores.size();
+
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    if ((*grafito->getListaAristas())[j][0]->getFinArista()->getContenido().getColorNuevo()==-1)
+                    {   int pepito=colores[contColores];
+                        Region r=(*grafito->getListaAristas())[j][0]->getFinArista()->getContenido();
+                        r.setColorNuevo(pepito);
+                        (*grafito->getListaAristas())[j][0]->getFinArista()->setContenido(r);
+                        cout<<"se cambia a "<<(*grafito->getListaAristas())[j][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
+                        cout<<"deberia ser "<<colores[contColores]<<endl;
+                        system("pause");
+                        contColores++;
+
+
+                    }
+                }
+            }
+
+
+        }
+
+  return true;
+    }
+
+    else
+    {
+        return false;
     }
 
 }

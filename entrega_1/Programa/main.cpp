@@ -1,18 +1,21 @@
 #include <iostream>
 #include <fstream>
-#include "Volumen.h"
+
 #include <string>
 #include "Arbol.h"
 #include "Intensidad.h"
 #include <fstream>
+#include "Volumen.h"
+
 
 Volumen *p;
+Grafo<Region> *grafo;
 using namespace std;
-
-
-
 int main(int argc, char** argv)
 {
+
+
+    grafo=new Grafo<Region>();
 
     string op;
     op="";
@@ -163,12 +166,12 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
             Imagen2D* imagen= new Imagen2D();
              if(imagen->cargarArchivo(nombre)){
             if(imagen->exportarHuffman(salida)){
-              cout<<"la imagen "<<nombre<<" ha sido codificada exitosamente"<<endl;  
+              cout<<"la imagen "<<nombre<<" ha sido codificada exitosamente"<<endl;
             }else{
-                 cout<<"la imagen "<<nombre<<" no ha podido ser codificada"<<endl;  
+                 cout<<"la imagen "<<nombre<<" no ha podido ser codificada"<<endl;
                  }
              }else{
-                 cout<<"la imagen "<<nombre<<" no ha podido ser codificada"<<endl;  
+                 cout<<"la imagen "<<nombre<<" no ha podido ser codificada"<<endl;
              }
         }
         else if(op=="decodificar_archivo")
@@ -185,11 +188,28 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
             if(imagen->cargarHuffman(nombre)){
              imagen->exportarImagen(salida);
              cout<<"El archivo "<<copia<<" ha sido decodificado extosamente"<<endl;
-            
+
             }else{
              cout<<"El archivo "<<copia<<" no ha podido ser decodificado"<<endl;
             }
-}
+        }else if(op=="generar_grafo"){
+
+     char *nombreImagen= new char [100];
+     //cin>>nombreImagen;
+     Imagen2D* img= new Imagen2D();
+     strcpy(nombreImagen,"regiones.pgm");
+     img->cargarArchivo(nombreImagen);
+     cargarGrafo(img,grafo);
+     if(colorearGrafo(grafo,3,img)){
+
+     for(int i=0;i<grafo->getListaAristas()->size();i++){
+        cout<<"color"<<(*grafo->getListaAristas())[i][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
+
+    }
+     }else{
+     cout<<"paila"<<endl;
+     }
+       }
 }
     return 0;
 }
