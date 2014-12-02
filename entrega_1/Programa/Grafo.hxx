@@ -20,7 +20,7 @@ vector<int> regiones;
 /* hay que encontrar las regiones*/
 // recorrer la img en busca de regions
 
-for(int i=0; i<imagen->getImagen()->size(); i++)
+for(int i=0; i<imagen->getFila(); i++)
 {
     for(int j=0; j<imagen->getColumna(); j++)
     {
@@ -120,7 +120,7 @@ for(int i=0; i<imagen->getImagen()->size(); i++)
 
         grafo->agregarArista(vertice1,vertice2,peso);
           grafo->agregarArista(vertice2,vertice1,peso);
-        system("cls");
+        //system("cls");
         cout<<"Arista aniadida satisfactoriamente con peso: "<<peso<<endl;
       cout<<"Si desea salir presione -1 de lo contrario ingrese 0 "<<endl;
     cin>>op;
@@ -629,6 +629,16 @@ bool Grafo<T>::visitarLosNodos( vector<Vertice<T> *>* visitados)
 
     return retorno;
  }
+ template<class T>
+ int Grafo<T>::darPosicionVertice(Vertice<T>* vertice){
+ 	for(int i=0; i< listaAristas->size(); i++){
+      if((*listaAristas)[i][0]->getFinArista()->getContenido()==vertice->getContenido()){
+      	return i;
+      }
+ 	}
+ 	return -1;
+ }
+
 /*template<class T>
 vector<vector<int> >* convertirAMatrizEnteros( vector<vector<Arista<T>*> >* matriz){
   vector<vector<int> >* a=new vector<vector<int> >();

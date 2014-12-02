@@ -46,8 +46,9 @@ void Region::setColor(int pColor)
     color=pColor;
 }
 void Region::setColorNuevo(int pColorN)
-{
+{  
     colorNuevo=pColorN;
+   
 }
 void Region::setIdentificador(int pId)
 {

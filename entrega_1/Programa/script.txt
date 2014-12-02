@@ -1,4 +1,4 @@
-generar_grafo
+generar_grafo regiones.pgm
 0
 0
 1
@@ -24,3 +24,4 @@ generar_grafo
 2
 5
 -1
+colorear_grafo 6 andrea.pgm

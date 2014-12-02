@@ -21,6 +21,7 @@ public:
     bool esTrivial();
     bool esRegular();
     bool esVacio();
+    int darPosicionVertice(Vertice<T>* vertice);
     Vertice<T>* encontrarVertice(Vertice<T>* vertice);
     bool buscarVertice(Vertice<T>* nuevo);
     int orden();

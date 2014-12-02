@@ -7,8 +7,9 @@ class Region{
      int y;
      int color;
      int identificador;
- public:
      int colorNuevo;
+ public:
+    
      Region(int x,int y, int color, int id);
      Region();
      int getColor();

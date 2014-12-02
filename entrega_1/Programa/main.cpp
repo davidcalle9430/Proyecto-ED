@@ -10,6 +10,7 @@
 
 Volumen *p;
 Grafo<Region> *grafo;
+Imagen2D *imag;
 using namespace std;
 int main(int argc, char** argv)
 {
@@ -184,7 +185,7 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
             cout<<"decodificando archivo por favor espere..."<<endl;
             char* copia= new char[100];
             strcpy(copia, nombre);
-            Imagen2D* imagen= new Imagen2D();
+         Imagen2D* imagen= new Imagen2D();
             if(imagen->cargarHuffman(nombre)){
              imagen->exportarImagen(salida);
              cout<<"El archivo "<<copia<<" ha sido decodificado extosamente"<<endl;
@@ -195,21 +196,52 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
         }else if(op=="generar_grafo"){
 
      char *nombreImagen= new char [100];
-     //cin>>nombreImagen;
-     Imagen2D* img= new Imagen2D();
-     strcpy(nombreImagen,"regiones.pgm");
-     img->cargarArchivo(nombreImagen);
-     cargarGrafo(img,grafo);
-     if(colorearGrafo(grafo,3,img)){
+     cin>>nombreImagen;
+     imag= new Imagen2D();
+     imag->cargarArchivo(nombreImagen);
+     cargarGrafo(imag,grafo);
+     cout<<"fin"<<endl;
+       }else if(op=="colorear_grafo"){
+       	int numColores;
+       	cin>>numColores;
+       	char* nombreSalida= new char[100];
+       	cin>>nombreSalida;
+        
 
-     for(int i=0;i<grafo->getListaAristas()->size();i++){
+       	if(colorearGrafo(grafo,numColores)){
+    //  utilzar imag para pintar
+         /* 
+    for(int i=0;i<grafo->getListaAristas()->size();i++){
         cout<<"color"<<(*grafo->getListaAristas())[i][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
 
-    }
+
+         }
+         */
+         if(grafo!=NULL){
+         Imagen2D copia=*imag;
+    for(int i=0; i<imag->getImagen()->size();i++)
+            {
+                for (int j=0;j<(*imag->getImagen())[i].size();j++)
+                {
+                    int pixel=(*imag->getImagen())[i][j];
+                    for(int g=0;g<grafo->getListaAristas()->size();g++){
+                       if(pixel==(*grafo->getListaAristas())[g][0]->getFinArista()->getContenido().getColor()){
+                            (*copia.getImagen())[i][j]=(*grafo->getListaAristas())[g][0]->getFinArista()->getContenido().getColorNuevo();
+                       
+                    }
+                }
+            }
+
+            imag->exportarImagen(nombreSalida);
+            cout<<"El grafo ha sido coloreado exitosamente con "<<numColores<<endl;
+
      }else{
-     cout<<"paila"<<endl;
+     cout<<"El grafo no ha podido ser coloreado con "<<numColores<<endl;
      }
+       }else{
+        cout<<"El grafo de la imagen aún no ha sio cargado"<<endl;
        }
+   }
 }
     return 0;
 }

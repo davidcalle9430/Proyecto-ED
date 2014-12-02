@@ -31,6 +31,7 @@ public:
     Intensidad* buscarIntensidad(Intensidad* intensidad, std::deque<Intensidad>* lista);
     bool cargarHuffman(char* nombreArchivo);
     bool cargarArchivo(char* nombre);
+
 };
 #include "Imagen2D.hxx"
 #endif

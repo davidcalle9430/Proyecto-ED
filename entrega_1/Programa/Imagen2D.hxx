@@ -65,8 +65,9 @@ bool Imagen2D::cargarArchivo(char* nombre)
         int width, height, x;
 
 
-        archivo>>width;
+       
         archivo>>height;
+         archivo>>width;
         archivo>>x;
 
 
@@ -112,75 +113,79 @@ bool Imagen2D::cargarArchivo(char* nombre)
     }
 
 }
-bool colorearGrafo(Grafo <Region> *grafito,int numColores, Imagen2D* imagen)
-{
-    int color=255/numColores;
-    vector<int> colores;
-    int contColores=0;
-    for (int i=color; i<255; i+=color)
-    {
-        colores.push_back(i+(i-color)/2);
-    }
+bool validarColores(Grafo<Region>* grafo, vector<int>* colores){
 
-    if(colores.size()<grafito->getListaAristas()->size())
-    {
-        (*grafito->getListaAristas())[0][0]->getFinArista()->getContenido().setColorNuevo(colores[0]);
-        contColores++;
+/* para cada uno de los vertices verifico si no hay adyacentes con colores iguales */
 
-        for(int j=0; j <grafito->getListaAristas()->size(); j++)
-        {
-            Region region;
-            region.setIdentificador(j);
-            Vertice<Region> *vertice= new Vertice<Region>(region);
-            //vector<Arista<Region>* >* adyacentes=grafito->buscarAdyacentes((*grafito->getListaAristas())[j][0]->getFinArista());
-           cout<<"para "<<(*grafito->getListaAristas())[j][0]->getFinArista()->getContenido().getIdentificador()<<endl;
-            for(int k=1; k<(*grafito->getListaAristas())[j].size(); k++)
-            {
-                if(contColores==colores.size())
-                {
-                    /* busco reutilzar algún color */
-                   // vector<Arista<Region>* >* adyacentes1=grafito->buscarAdyacentes((*adyacentes)[k]->getFinArista());
-                    for(int p=0; p<colores.size(); p++)
-                    {
-                        bool encontre=false;
-                        for(int s=1; s<(*grafito->getListaAristas())[k].size(); s++)
-                        {
-                            if((*grafito->getListaAristas())[k][s]->getFinArista()->getContenido().getColorNuevo()==colores[p])
-                            {
-                                encontre=true;
-                            }
-                        }
-                        if(!encontre)
-                        {
-                            (*grafito->getListaAristas())[k][0]->getFinArista()->getContenido().setColorNuevo(colores[p]);
-                            p=colores.size();
-
-                        }
-                    }
-
-
-                }
-                else
-                {
-                    if ((*grafito->getListaAristas())[j][0]->getFinArista()->getContenido().getColorNuevo()==-1)
-                    {   int pepito=colores[contColores];
-                        Region r=(*grafito->getListaAristas())[j][0]->getFinArista()->getContenido();
-                        r.setColorNuevo(pepito);
-                        (*grafito->getListaAristas())[j][0]->getFinArista()->setContenido(r);
-                        cout<<"se cambia a "<<(*grafito->getListaAristas())[j][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
-                        cout<<"deberia ser "<<colores[contColores]<<endl;
-                        system("pause");
-                        contColores++;
-
-
-                    }
-                }
-            }
-
-
+    for(int i=0; i<grafo->getListaAristas()->size();i++){
+        vector<Arista<Region>* >* adyacentes= grafo->buscarAdyacentes((*grafo->getListaAristas())[i][0]->getFinArista());
+      
+        for(int j=1; j<adyacentes->size();j++){
+          int pos=grafo->darPosicionVertice((*adyacentes)[j]->getFinArista());
+          //cout<<"la posicion del adyancente es"<<pos<<endl;
+          if(i!=pos&&(*grafo->getListaAristas())[pos][0]->getFinArista()->getContenido().getColorNuevo()==(*grafo->getListaAristas())[i][0]->getFinArista()->getContenido().getColorNuevo()){
+            
+            // cout<<"fin para i: "<<i<<" pos: "<<pos<<" repetido:"<<(*grafo->getListaAristas())[pos][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
+            return false;
+          }
         }
 
-  return true;
+    }
+  /* falta validar que estén todos los colores*/
+    bool encontrado=true;
+    for(int i=0; i<colores->size()&&encontrado;i++){
+        bool pepito=false;
+        for(int j=0; j<grafo->getListaAristas()->size();j++){
+            if((*colores)[i]==(*grafo->getListaAristas())[j][0]->getFinArista()->getContenido().getColorNuevo()){
+                pepito=true;
+                j=grafo->getListaAristas()->size();
+            }
+        }
+        if(!pepito){
+            return false;
+        }
+    }
+
+return true;
+}
+void combinatorioColores(int posicion, bool &valor, Grafo<Region>* grafito, vector<int>* colores){
+    if(posicion==grafito->getListaAristas()->size()){
+ 
+       if(validarColores(grafito,colores)){
+        valor=false;
+       }
+        
+    }else{
+
+     for(int i=0; i<colores->size()&&valor;i++){
+       (*grafito->getListaAristas())[posicion][0]->getFinArista()->getContenido().setColorNuevo((*colores)[i]);
+       Region r=  (*grafito->getListaAristas())[posicion][0]->getFinArista()->getContenido();
+       r.setColorNuevo((*colores)[i]);
+       (*grafito->getListaAristas())[posicion][0]->getFinArista()->setContenido(r);
+       //cout<<"deberia cambiar a"<<(*colores)[i]<<endl;
+       //cout<<"cambio de colores a"<<    (*grafito->getListaAristas())[posicion][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
+       combinatorioColores(posicion+1, valor, grafito,colores);
+     }
+    }
+
+    }
+bool colorearGrafo(Grafo <Region> *grafito,int numColores)
+{
+    int color=255/numColores;
+    vector<int>* colores= new vector<int>();
+    int contColores=0;
+    int conti=0;
+    for (int i=color; i<255; i+=color)
+    {    int pepito= conti*color;
+        int pepito2=pepito+color;
+        colores->push_back((pepito2+pepito)/2);
+        conti++;
+    }
+
+    if(colores->size()<=grafito->getListaAristas()->size()){   
+        bool retorno=true;
+        combinatorioColores(0,retorno, grafito,colores);
+        return !retorno;
     }
 
     else
@@ -189,6 +194,10 @@ bool colorearGrafo(Grafo <Region> *grafito,int numColores, Imagen2D* imagen)
     }
 
 }
+void colorearImagen(Grafo<Region>* grafo, Imagen2D* img){
+/* Lo que hay que hacer es recorre la imagen, una vez recorrida esta*/
+}
+
 Imagen2D::Imagen2D(char * nombre)
 {
     strcat(nombre,".pgm");
