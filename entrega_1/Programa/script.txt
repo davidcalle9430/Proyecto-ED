@@ -24,4 +24,19 @@ generar_grafo regiones.pgm
 2
 5
 -1
-colorear_grafo 6 andrea.pgm
+colorear_grafo 3 andrea.pgm
+
+
+cargar_volumen t1_icbm_5mm_ 36
+proyeccion2D x maximo xmax.pgm
+proyeccion2D y maximo ymax.pgm
+proyeccion2D z maximo zmax.pgm
+proyeccion2D x minimo xmin.pgm
+proyeccion2D y minimo ymin.pgm
+proyeccion2D z minimo zmin.pgm
+proyeccion2D x promedio xprom.pgm
+proyeccion2D y promedio yprom.pgm
+proyeccion2D z promedio zprom.pgm
+proyeccion2D x mediana xmed.pgm
+proyeccion2D y mediana ymed.pgm
+proyeccion2D z mediana zmed.pgm

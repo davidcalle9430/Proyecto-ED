@@ -214,8 +214,9 @@ Imagen2D::Imagen2D(char * nombre)
         int width, height, x;
 
 
-        archivo>>width;
         archivo>>height;
+        
+        archivo>>width;
         archivo>>x;
 
 

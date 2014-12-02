@@ -249,12 +249,8 @@ Imagen2D* Volumen:: proyeccionZMediana()
 {
 
     Imagen2D* proyeccion= new Imagen2D();
-
     Imagen2D ima=(*(imagenes))[0];
-
-    vector< vector<int > >* mediana= new vector< vector<int > > (ima.getColumna(), vector<int> (ima.getFila()));
-
-
+    vector< vector<int > >* mediana= new vector< vector<int > > (ima.getFila(), vector<int> (ima.getColumna()));
     inicializarVector(mediana);
 
 
@@ -275,12 +271,12 @@ Imagen2D* Volumen:: proyeccionZMediana()
             if(tamanio%2!=0)
             {
 
-                (*(mediana))[j][i]=(*(temp))[tamanio/2];
+                (*(mediana))[i][j]=(*(temp))[tamanio/2];
             }
             else
             {
 
-                (*(mediana))[j][i]=  ((*(temp))[tamanio/2]+(*(temp))[(tamanio/2)-1])/2;
+                (*(mediana))[i][j]=  ((*(temp))[tamanio/2]+(*(temp))[(tamanio/2)-1])/2;
             }
 
             delete temp;

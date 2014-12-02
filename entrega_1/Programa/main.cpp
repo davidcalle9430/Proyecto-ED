@@ -207,7 +207,7 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
        	char* nombreSalida= new char[100];
        	cin>>nombreSalida;
         
-
+ if(grafo!=NULL){
        	if(colorearGrafo(grafo,numColores)){
     //  utilzar imag para pintar
          /* 
@@ -217,7 +217,7 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
 
          }
          */
-         if(grafo!=NULL){
+        
          Imagen2D copia=*imag;
     for(int i=0; i<imag->getImagen()->size();i++)
             {
@@ -231,7 +231,7 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
                     }
                 }
             }
-
+        }
             imag->exportarImagen(nombreSalida);
             cout<<"El grafo ha sido coloreado exitosamente con "<<numColores<<endl;
 
@@ -239,7 +239,7 @@ cout<<"el volumen aun no ha sido cargado en memoria"<<endl;
      cout<<"El grafo no ha podido ser coloreado con "<<numColores<<endl;
      }
        }else{
-        cout<<"El grafo de la imagen aún no ha sio cargado"<<endl;
+        cout<<"El grafo de la imagen aún no ha sido cargado"<<endl;
        }
    }
 }
