@@ -639,6 +639,7 @@ bool Grafo<T>::visitarLosNodos( vector<Vertice<T> *>* visitados)
  	return -1;
  }
 
+
 /*template<class T>
 vector<vector<int> >* convertirAMatrizEnteros( vector<vector<Arista<T>*> >* matriz){
   vector<vector<int> >* a=new vector<vector<int> >();

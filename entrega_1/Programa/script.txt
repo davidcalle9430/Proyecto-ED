@@ -24,7 +24,8 @@ generar_grafo regiones.pgm
 2
 5
 -1
-colorear_grafo 3 andrea.pgm
+colorear_grafo 4 andrea.pgm
+tabla_distancias tablita.txt
 
 
 cargar_volumen t1_icbm_5mm_ 36

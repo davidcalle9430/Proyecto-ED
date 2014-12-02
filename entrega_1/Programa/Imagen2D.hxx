@@ -65,7 +65,7 @@ bool Imagen2D::cargarArchivo(char* nombre)
         int width, height, x;
 
 
-       
+
         archivo>>height;
          archivo>>width;
         archivo>>x;
@@ -119,12 +119,12 @@ bool validarColores(Grafo<Region>* grafo, vector<int>* colores){
 
     for(int i=0; i<grafo->getListaAristas()->size();i++){
         vector<Arista<Region>* >* adyacentes= grafo->buscarAdyacentes((*grafo->getListaAristas())[i][0]->getFinArista());
-      
+
         for(int j=1; j<adyacentes->size();j++){
           int pos=grafo->darPosicionVertice((*adyacentes)[j]->getFinArista());
           //cout<<"la posicion del adyancente es"<<pos<<endl;
           if(i!=pos&&(*grafo->getListaAristas())[pos][0]->getFinArista()->getContenido().getColorNuevo()==(*grafo->getListaAristas())[i][0]->getFinArista()->getContenido().getColorNuevo()){
-            
+
             // cout<<"fin para i: "<<i<<" pos: "<<pos<<" repetido:"<<(*grafo->getListaAristas())[pos][0]->getFinArista()->getContenido().getColorNuevo()<<endl;
             return false;
           }
@@ -150,11 +150,11 @@ return true;
 }
 void combinatorioColores(int posicion, bool &valor, Grafo<Region>* grafito, vector<int>* colores){
     if(posicion==grafito->getListaAristas()->size()){
- 
+
        if(validarColores(grafito,colores)){
         valor=false;
        }
-        
+
     }else{
 
      for(int i=0; i<colores->size()&&valor;i++){
@@ -182,7 +182,7 @@ bool colorearGrafo(Grafo <Region> *grafito,int numColores)
         conti++;
     }
 
-    if(colores->size()<=grafito->getListaAristas()->size()){   
+    if(colores->size()<=grafito->getListaAristas()->size()){
         bool retorno=true;
         combinatorioColores(0,retorno, grafito,colores);
         return !retorno;
@@ -192,7 +192,6 @@ bool colorearGrafo(Grafo <Region> *grafito,int numColores)
     {
         return false;
     }
-
 }
 void colorearImagen(Grafo<Region>* grafo, Imagen2D* img){
 /* Lo que hay que hacer es recorre la imagen, una vez recorrida esta*/
@@ -215,7 +214,7 @@ Imagen2D::Imagen2D(char * nombre)
 
 
         archivo>>height;
-        
+
         archivo>>width;
         archivo>>x;
 
