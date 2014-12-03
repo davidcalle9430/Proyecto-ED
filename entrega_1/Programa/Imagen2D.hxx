@@ -1,4 +1,4 @@
-#include "Imagen2D.h"
+include "Imagen2D.h"
 #include <string>
 #include <algorithm>
 #include <list>
@@ -296,12 +296,12 @@ void Imagen2D::exportarImagen(char* nom_arch)
             }
             arch<<endl;
         }
-        cout<<"La proyeccion 2D del volumen en memoria ha sido generada"<<endl;
+        cout<<"La imagen en memoria ha sido generada"<<endl;
 
     }
     else
     {
-        cout<<"La proyeccion 2D del volumen en memoria no ha podido ser generada"<<endl;
+        cout<<"La imagen no ha podido ser generada"<<endl;
     }
     arch.close();
 }

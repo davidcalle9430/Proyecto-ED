@@ -22,10 +22,7 @@ class Region{
      void setX(int pX);
      void setY(int pY);
      void setIdentificador(int pId);
-     bool operator==(const Region &r)const
-     {
-       return r.getIdentificador()==identificador;
-     }
+     bool operator==(const Region &r)const;
 };
 #include "Region.hxx"
 #endif

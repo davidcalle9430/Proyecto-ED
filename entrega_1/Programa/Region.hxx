@@ -8,10 +8,14 @@ Region ::Region(int Cox,int Coy, int Ccolor, int id)
     identificador=id;
     colorNuevo=-1;
 }
-Region ::Region()
+Region::Region()
 {
 
 }
+ bool Region::operator==(const Region &r)const
+     {
+       return r.getIdentificador()==identificador;
+     }
 
 int Region::getX()
 {

@@ -78,7 +78,7 @@ void distanciaMaxima(Grafo<Region>* grafo)
     }
 
     int iMax=-1,jMax=-1,maximo=-1;
-    cout<<endl<<" --TABLA DE DISTANCIAS MINIMA --"<<endl;
+    cout<<endl<<" --TABLA DE DISTANCIAS MAXIMA --"<<endl;
     for(int i=0; i< grafo->getListaAristas()->size(); i++)
     {
         for(int j=0; j< grafo->getListaAristas()->size(); j++)
